@@ -8,3 +8,20 @@ export const rooms: Room[] = [
 ];
 export const offsets:Record<Direction,[number,number]>={north:[0,-1],south:[0,1],west:[-1,0],east:[1,0]};
 export function neighbour(room:Room,direction:Direction):Room|undefined {const [dx,dy]=offsets[direction];return rooms.find(r=>r.x===room.x+dx&&r.y===room.y+dy);}
+
+export type GameState = { room: Room; message: string; kitchenVisited: boolean };
+export function createInitialState(): GameState {
+  return { room: rooms[3], message: "", kitchenVisited: false };
+}
+export function movePlayer(state: GameState, direction: Direction): GameState {
+  const next = neighbour(state.room, direction);
+  if (!next) {
+    return { ...state, message: direction === "south" || direction === "east"
+      ? "The open sea blocks your way. Stay on the lighthouse paths."
+      : "The outer stone wall blocks your way. Try another direction." };
+  }
+  if (next === rooms[1] && !state.kitchenVisited) {
+    return { ...state, message: "The lamp room door is locked." };
+  }
+  return { room: next, message: "", kitchenVisited: state.kitchenVisited || next === rooms[2] };
+}

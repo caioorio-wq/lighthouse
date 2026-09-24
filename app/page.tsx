@@ -1,15 +1,10 @@
 "use client";
 import { useEffect, useReducer, type CSSProperties } from "react";
-import { rooms, offsets, neighbour, type Direction, type Room } from "@/lib/game";
+import { rooms, offsets, neighbour, createInitialState, movePlayer, type Direction } from "@/lib/game";
 const directions = Object.keys(offsets) as Direction[];
 const keys: Record<string, Direction> = {ArrowUp:"north",ArrowDown:"south",ArrowLeft:"west",ArrowRight:"east"};
-type State = { room: Room; message: string };
-function reducer(state: State, direction: Direction): State {
- const next = neighbour(state.room, direction);
- return next ? {room:next,message:""} : {...state,message:direction === "south" || direction === "east" ? "The open sea blocks your way. Stay on the lighthouse paths." : "The outer stone wall blocks your way. Try another direction."};
-}
 export default function Lighthouse() {
- const [state, dispatch] = useReducer(reducer, {room:rooms[3],message:""});
+ const [state, dispatch] = useReducer(movePlayer, undefined, createInitialState);
  const current = state.room;
  useEffect(() => {
   const onKey = (event: KeyboardEvent) => {
