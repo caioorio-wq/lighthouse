@@ -11,18 +11,21 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Install build tools
-        run: npm install --no-audit --no-fund
-      - name: Type-check and build static site
-        run: npm run build
-      - name: Deploy to Cloudflare Workers
-        run: npx wrangler deploy
+          cache: npm
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Check types and lint
+        run: npm run typecheck && npm run lint
+      - name: Build Next.js for Cloudflare
+        run: npm run build:cloudflare
+      - name: Deploy to the existing Cloudflare Worker
+        run: npx opennextjs-cloudflare deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

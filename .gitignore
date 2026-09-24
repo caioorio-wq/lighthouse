@@ -6,3 +6,9 @@ dist/
 site/
 .wrangler/
 .dev.vars
+
+.next/
+.open-next/
+out/
+next-env.d.ts
+*.tsbuildinfo
