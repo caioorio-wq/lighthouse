@@ -1,1 +1,14 @@
-{"name":"lighthouse","version":"1.0.0","private":true,"scripts":{"build":"tsc","start":"npm run build && python3 -m http.server 4198 --bind 127.0.0.1"},"devDependencies":{"typescript":"^5.9.0"}}
+{
+  "name": "lighthouse",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc && node scripts/prepare-site.mjs",
+    "start": "npm run build && python3 -m http.server 4198 --bind 127.0.0.1",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "wrangler": "^4.0.0"
+  }
+}
