@@ -1,0 +1,1 @@
+{"name":"lighthouse","version":"1.0.0","private":true,"scripts":{"build":"tsc","start":"npm run build && python3 -m http.server 4198 --bind 127.0.0.1"},"devDependencies":{"typescript":"^5.9.0"}}
